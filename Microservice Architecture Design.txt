@@ -1,0 +1,137 @@
+Microservice Architecture Design Document 
+
+ 
+
+This system is composed of three independent microservices, each handling specific responsibilities within the hospital appointment ecosystem. 
+
+ 
+
+1. Patient Microservice 
+
+Responsibilities: 
+
+Add new patient 
+
+Update patient details 
+
+Delete patient 
+
+Retrieve patient information 
+
+Endpoints: 
+
+Add Patient 
+
+POST /patient/add 
+
+Payload: 
+
+{ 
+   "name": "Tultul", 
+   "age": 28, 
+   "dateOfBirth": "1997-03-03", 
+   "contactInfo": "9606239034", 
+   "gender": "Male" 
+ } 
+
+Update Patient 
+
+PUT /patient/update/{id} 
+
+Payload: 
+
+{ 
+   "contactInfo": "9606239039", 
+   "gender": "Male" 
+ } 
+
+Delete Patient 
+
+DELETE /patient/delete/{id} 
+
+ 
+
+2. Doctor Microservice 
+
+Responsibilities: 
+
+Add doctor details with availability 
+
+Fetch doctor details by ID 
+
+Search doctors by specialization 
+
+Endpoints: 
+
+Add Doctor 
+
+POST /doctor/add 
+
+Payload: 
+
+{ 
+   "name": "Dr. Anjali Mishra", 
+   "specialization": "Orthopedic", 
+   "contactInfo": "9876545212", 
+   "weeklyAvailability": [ 
+     { 
+       "dayOfWeek": "MONDAY", 
+       "startTime": "09:00", 
+       "endTime": "13:00" 
+     }, 
+     { 
+       "dayOfWeek": "WEDNESDAY", 
+       "startTime": "09:00", 
+       "endTime": "11:00" 
+     }, 
+     { 
+       "dayOfWeek": "SATURDAY", 
+       "startTime": "12:00", 
+       "endTime": "16:00" 
+     } 
+   ] 
+ } 
+
+Get Doctor by ID 
+
+GET /doctor/{id} 
+
+Search Doctors by Specialization 
+
+GET /doctor/search?specialization=Orthopedic 
+
+ 
+
+3. Appointment Microservice 
+
+Responsibilities: 
+
+Retrieve available appointment slots for a doctor on a specific date 
+
+Book appointments 
+
+Endpoints: 
+
+Get Available Slots 
+
+GET /appointment/available-slots?doctorId={id}&date=2025-06-18 
+
+Book Appointment 
+
+POST /appointment/book 
+
+Payload: 
+
+{ 
+   "doctorId": 5, 
+   "patientId": 1, 
+   "appointmentTime": "2025-06-18T11:00:00" 
+ } 
+
+ 
+
+🔄 Communication Between Microservices 
+
+Each microservice communicates independently via REST endpoints. Appointment Microservice fetches doctor and patient details as needed using RestTemplate to ensure decoupling and modularity. 
+
+ 
